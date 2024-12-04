@@ -48,16 +48,6 @@ public class ApiException extends RuntimeException {
     }
 
     @Override
-    public StackTraceElement[] getStackTrace() {
-        return null;
-    }
-
-    @Override
-    public String getLocalizedMessage() {
-        return null;
-    }
-
-    @Override
     public String toString() {
         return "ApiException{" +
                 "timeStamp=" + timeStamp +
