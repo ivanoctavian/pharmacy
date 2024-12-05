@@ -31,4 +31,8 @@ public class SuppliersController {
     public ResponseEntity<Response<?>> addSupplier(@RequestBody UpdateSupplierRequest updateSupplierRequest){
         return new ResponseEntity<>(supplierService.updateSupplier(updateSupplierRequest), HttpStatus.OK);
     }
+    @DeleteMapping(value = "")
+    public ResponseEntity<Response<?>> deleteSupplier(@RequestParam String supplierName){
+        return new ResponseEntity<>(supplierService.deleteSupplier(supplierName), HttpStatus.OK);
+    }
 }
