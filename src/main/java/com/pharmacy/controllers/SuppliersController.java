@@ -28,7 +28,7 @@ public class SuppliersController {
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity<Response<?>> addSupplier(@RequestBody UpdateSupplierRequest updateSupplierRequest){
+    public ResponseEntity<Response<?>> updateSupplier(@RequestBody UpdateSupplierRequest updateSupplierRequest){
         return new ResponseEntity<>(supplierService.updateSupplier(updateSupplierRequest), HttpStatus.OK);
     }
     @DeleteMapping(value = "")
