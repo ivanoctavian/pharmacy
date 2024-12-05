@@ -23,11 +23,38 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class SupplierService {
-
     @Autowired
     private SupplierRepository supplierRepository;
     @Autowired
     FieldValidator fieldValidator;
+
+    public Response<?> deleteSupplier(String supplierName){
+        log.info("SupplierName param is present. Supplier to search for: " + supplierName);
+        try{
+            Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
+            if(supplier.isPresent()){
+                supplierRepository.delete(supplier.get());
+                log.info("Supplier deleted successfully");
+                Response<Supplier> response =new Response<>();
+                response.setStatus(Response.Status.SUCCESS);
+                return response;
+            }else{
+                String errMessage = String.format("Supplier with name %s was not found.",supplierName);
+                log.info(errMessage);
+                Response<Supplier> response =new Response<>();
+                response.setStatus(Response.Status.FAIL);
+                response.setMessage(errMessage);
+                return response;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("Could not delete entity from database.");
+            Response<Supplier> response = new Response<>();
+            response.setStatus(Response.Status.ERROR);
+            response.setMessage("Could not delete entity from database.");
+            return response;
+        }
+    }
 
     public Response<?> updateSupplier(UpdateSupplierRequest request){
         if(request == null){
@@ -67,10 +94,7 @@ public class SupplierService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "SupplierRequest is null");
         }
         String supplierName = request.getSupplierName();
-        if(supplierName == null || supplierName.trim().isEmpty()){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "SupplierName is missing.");
-        }
-        if(supplierRepository.findByName(supplierName).isPresent()){
+        if(supplierRepository.existsByName(supplierName)){
             throw new ApiException(HttpStatus.BAD_REQUEST, String.format("Supplier '%s' already exists.", supplierName));
         }
 
