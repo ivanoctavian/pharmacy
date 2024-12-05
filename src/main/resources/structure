@@ -1,0 +1,27 @@
+supplier
+ - get supplier/s <optional<nume>
+ - add supplier
+ - edit supplier
+ - delete supplier
+
+categories
+ - get category/ {Optional<nume>}
+ - add category
+ - edit category
+ - delete category
+
+medicines
+ - get medicines by...
+ - add medicine
+ - edit medicine - stock, price, orice;
+ - increase/decrease stock by number;
+ - delete medicine
+
+
+
+
+users management - only by admin
+  - add user - unique username
+  - rolurile sa fie doar 3-4 variante.
+  - edit: disable user
+  - edit: change pwd
