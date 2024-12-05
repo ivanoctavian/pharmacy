@@ -1,15 +1,13 @@
 package com.pharmacy.controllers;
 
-import com.pharmacy.modules.inventory.model.Supplier;
 import com.pharmacy.modules.inventory.service.SupplierService;
 import com.pharmacy.payload.Response;
+import com.pharmacy.payload.SupplierRequest;
+import com.pharmacy.payload.UpdateSupplierRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -22,5 +20,15 @@ public class SuppliersController {
     @GetMapping(value = "")
     public ResponseEntity<Response<?>> getSuppliers(@RequestParam Optional<String> supplierName){
         return new ResponseEntity<>(supplierService.getSuppliers(supplierName), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/add")
+    public ResponseEntity<Response<?>> addSupplier(@RequestBody SupplierRequest supplierRequest){
+        return new ResponseEntity<>(supplierService.addNewSupplier(supplierRequest), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/update")
+    public ResponseEntity<Response<?>> addSupplier(@RequestBody UpdateSupplierRequest updateSupplierRequest){
+        return new ResponseEntity<>(supplierService.updateSupplier(updateSupplierRequest), HttpStatus.OK);
     }
 }
