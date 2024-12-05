@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.pharmacy.payload.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -74,5 +76,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                .body(response);
     }
 
+    @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
+    public ResponseEntity<Object> handleInvalidDataAccess(InvalidDataAccessResourceUsageException apiException, WebRequest request) {
+        log.error("Error: " + apiException.getMessage());
+        Response<Object> response = new Response<>(Response.Status.ERROR, "Database exception.");
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
 }
