@@ -27,7 +27,7 @@ CREATE TABLE Medicine
    supplier_id INT,
    category_id INT,
    price DECIMAL(10, 2) NOT NULL,
-   FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
+   FOREIGN KEY (supplier_id) REFERENCES Supplier(id)
        ON DELETE CASCADE
        ON UPDATE CASCADE,
    FOREIGN KEY (category_id) REFERENCES Category
