@@ -1,3 +1,42 @@
+idei extra:
+!!! Actuator, prometheus + grafana
+
+1. mariri de preturi din motive diverse: - pricing strategy;
+  - fa asta cu un design pattern
+  a. seasonal (iarna, primavara)
+  b. la cerere random, cu procent
+  c. la cerere, doar pentru anumiti supplieri
+  d. la cerere, doar pentru anumite tipuri - gen se da o lege ca antibioticele sa nu mai plateasca taxe
+
+1. mariri de preturi dar sa vina ca request un json cu o lista de obiecte;
+  -  ca si cand e un select cu casute in frontendul de management tool
+  - si la toate vrea sa le modifice pretul.
+
+2. validare cu o baza de date imensa de medicamente existente
+
+  a. baza aia de date si indexarea sa mearga blana
+     sau
+  a. sa apelez un api extern care interogheaza o lista mare mare de medicamente
+      - 1.https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22xanax%22
+      - 2.https://api.fda.gov/drug/label.json?search=openfda.brand_name:ibuprofen
+3. generare raport cu stock-ul:
+   - excel
+   - pdf
+   - json
+   - xml
+4. notificare de stoc; mai multe tipuri de notificari- se pot extinde
+   - 1. daca
+5. validator de prescriptii: tipuri de prescriptii:
+   - daca e de antibiotic, trebuie sa aiba 4 campuri;
+
+
+
+Java 8 -> 17 features
+ - switch + lambda
+ - text blocks """
+ - sealed class public sealed class Shape permits Circle, Square {}
+ - records - imutabile
+
 supplier
  - get supplier/s <optional<nume>
  - add supplier
