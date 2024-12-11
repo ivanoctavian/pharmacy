@@ -7,6 +7,7 @@ import com.pharmacy.modules.inventory.repository.SupplierRepository;
 import com.pharmacy.payload.Response;
 import com.pharmacy.payload.SupplierRequest;
 import com.pharmacy.payload.UpdateSupplierRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,12 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SupplierService {
-    @Autowired
-    private SupplierRepository supplierRepository;
-    @Autowired
-    FieldValidator fieldValidator;
+
+    private final SupplierRepository supplierRepository;
+
+    private final FieldValidator fieldValidator;
 
     public Response<?> deleteSupplier(String supplierName){
         log.info("SupplierName param is present. Supplier to search for: " + supplierName);
