@@ -4,16 +4,14 @@ import com.pharmacy.config.ApiException;
 import com.pharmacy.config.FieldValidator;
 import com.pharmacy.modules.inventory.model.Supplier;
 import com.pharmacy.modules.inventory.repository.SupplierRepository;
+import com.pharmacy.payload.AddSupplierRequest;
 import com.pharmacy.payload.Response;
-import com.pharmacy.payload.SupplierRequest;
 import com.pharmacy.payload.UpdateSupplierRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +58,7 @@ public class SupplierService {
 
     public Response<?> updateSupplier(UpdateSupplierRequest request){
         if(request == null){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "SupplierRequest is null");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "AddSupplierRequest is null");
         }
         fieldValidator.validateMandatoryFields(request);
         String supplierName = request.getSupplierName();
@@ -91,9 +89,9 @@ public class SupplierService {
 
     }
 
-    public Response<?> addNewSupplier(SupplierRequest request){
+    public Response<?> addNewSupplier(AddSupplierRequest request){
         if(request == null){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "SupplierRequest is null");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "AddSupplierRequest is null");
         }
         String supplierName = request.getSupplierName();
         if(supplierRepository.existsByName(supplierName)){

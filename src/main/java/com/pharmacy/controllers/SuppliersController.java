@@ -1,8 +1,8 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.modules.inventory.service.SupplierService;
+import com.pharmacy.payload.AddSupplierRequest;
 import com.pharmacy.payload.Response;
-import com.pharmacy.payload.SupplierRequest;
 import com.pharmacy.payload.UpdateSupplierRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ public class SuppliersController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<Response<?>> addSupplier(@RequestBody SupplierRequest supplierRequest){
-        return new ResponseEntity<>(supplierService.addNewSupplier(supplierRequest), HttpStatus.OK);
+    public ResponseEntity<Response<?>> addSupplier(@RequestBody AddSupplierRequest addSupplierRequest){
+        return new ResponseEntity<>(supplierService.addNewSupplier(addSupplierRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/update")

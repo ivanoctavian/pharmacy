@@ -5,7 +5,7 @@ import com.pharmacy.config.Mandatory;
 import lombok.Data;
 
 @Data
-public class SupplierRequest {
+public class AddSupplierRequest {
     @Mandatory
     private String supplierName;
 }

@@ -5,7 +5,7 @@ import com.pharmacy.config.FieldValidator;
 import com.pharmacy.modules.inventory.model.Supplier;
 import com.pharmacy.modules.inventory.service.SupplierService;
 import com.pharmacy.payload.Response;
-import com.pharmacy.payload.SupplierRequest;
+import com.pharmacy.payload.AddSupplierRequest;
 import com.pharmacy.payload.UpdateSupplierRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -94,7 +94,7 @@ class SupplierServiceTests {
     void save_new_supplier_unique_name(){
         when(supplierRepository.save(any()))
                 .thenReturn(supplierCreator.supplierMock());
-        SupplierRequest request = supplierCreator.createNewSupplier();
+        AddSupplierRequest request = supplierCreator.createNewSupplier();
         Response response= supplierService.addNewSupplier(request);
         assertEquals(Response.Status.SUCCESS, response.getStatus());
     }
@@ -102,7 +102,7 @@ class SupplierServiceTests {
     @Test
     void save_supplier_existing_name(){
         Supplier supplierMockExpectToGet = supplierCreator.supplierMock();
-        SupplierRequest request = supplierCreator.createNewSupplier();
+        AddSupplierRequest request = supplierCreator.createNewSupplier();
         //when save, return the mocked
         when(supplierRepository.save(any()))
                 .thenReturn(supplierMockExpectToGet);

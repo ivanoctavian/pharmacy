@@ -1,7 +1,7 @@
 package com.pharmacy.modules.inventory.repository;
 
 import com.pharmacy.modules.inventory.model.Supplier;
-import com.pharmacy.payload.SupplierRequest;
+import com.pharmacy.payload.AddSupplierRequest;
 import com.pharmacy.payload.UpdateSupplierRequest;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +26,10 @@ public class SupplierHelper {
     }
 
 
-    protected SupplierRequest createNewSupplier(){
-       SupplierRequest supplierRequest = new SupplierRequest();
-       supplierRequest.setSupplierName("TEST_1234");
-       return supplierRequest;
+    protected AddSupplierRequest createNewSupplier(){
+       AddSupplierRequest addSupplierRequest = new AddSupplierRequest();
+       addSupplierRequest.setSupplierName("TEST_1234");
+       return addSupplierRequest;
     }
     protected Supplier supplierMock(){
         Supplier supplier = new Supplier();
