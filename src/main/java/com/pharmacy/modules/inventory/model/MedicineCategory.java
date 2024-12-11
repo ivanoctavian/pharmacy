@@ -17,6 +17,7 @@ public enum MedicineCategory {
         this.name = name;
     }
 
+    //use this to have a standardisez error messages when a request body that have an ENUM-based-field
     @JsonCreator
     public static MedicineCategory fromString(String value) {
         try {
