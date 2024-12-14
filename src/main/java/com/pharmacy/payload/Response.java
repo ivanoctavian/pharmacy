@@ -35,6 +35,6 @@ public class Response<T> {
         this.data = data;
     }
     public enum Status {
-        SUCCESS, ERROR, FAIL
+        SUCCESS, ERROR, FAIL, NOT_FOUND
     }
 }
