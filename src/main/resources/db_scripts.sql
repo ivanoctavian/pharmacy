@@ -39,7 +39,7 @@ CREATE SEQUENCE Medicine_seq
 CREATE TABLE Medicine
 (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   name VARCHAR(255) NOT NULL,
+   name VARCHAR(255) NOT NULL UNIQUE,
    expiration_date DATE NOT NULL,
    stock INT CHECK (stock > 0),
    supplier_id INT,
@@ -92,11 +92,11 @@ VALUES ('ali_medea', 'pwdmedea', FALSE, 'ROLE_EMPLOYEE');
 -- Category
 
 INSERT INTO Category
-    (name) VALUES ('Supplements');
+(name, require_recipe) VALUES ('Supplements', FALSE );
 INSERT INTO Category
-    (name) VALUES ('Medicine');
+(name, require_recipe) VALUES ('Medicine', FALSE );
 INSERT INTO Category
-    (name) VALUES ('Antibiotics');
+    (name, require_recipe) VALUES ('Antibiotics', TRUE);
 
 -- Supplier
 INSERT INTO Supplier (name) VALUES ('Bayer');
