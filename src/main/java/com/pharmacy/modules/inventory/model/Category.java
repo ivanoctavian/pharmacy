@@ -20,7 +20,8 @@ public class Category {
     private Long id;
 
     @Column(name = "name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private MedicineCategory name;
 
     @Column(name = "require_recipe")
     private boolean requiresRecipe = false;
