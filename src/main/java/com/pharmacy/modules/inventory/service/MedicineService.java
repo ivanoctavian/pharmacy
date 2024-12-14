@@ -31,7 +31,7 @@ public class MedicineService {
         List<Medicine> medicines = medicineRepository.findAllByCategory_Id(categoryId);
         if(medicines.isEmpty()){
             Response<List<Medicine>> response = new Response<>();
-            response.setStatus(Response.Status.FAIL);
+            response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No medicines found.");
             return response;
         }
@@ -49,7 +49,7 @@ public class MedicineService {
         List<Medicine> medicines = medicineRepository.findAllBySubstanceName(substanceName);
         if(medicines.isEmpty()){
             Response<List<Medicine>> response = new Response<>();
-            response.setStatus(Response.Status.FAIL);
+            response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No medicines found.");
             return response;
         }
@@ -72,7 +72,7 @@ public class MedicineService {
         log.info("List of medicines found: " + medicines);
         if(medicines.isEmpty()){
             Response<List<Medicine>> response = new Response<>();
-            response.setStatus(Response.Status.FAIL);
+            response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No medicines found.");
             return response;
         }
@@ -92,10 +92,10 @@ public class MedicineService {
                 response.setData(medicine.get());
                 return response;
             }else{
-                String errMessage = String.format("Medicine with name %s was not found.",medicineName);
+                String errMessage = String.format("Medicine %s was not found.",medicineName);
                 log.info(errMessage);
                 Response<Medicine> response =new Response<>();
-                response.setStatus(Response.Status.FAIL);
+                response.setStatus(Response.Status.NOT_FOUND);
                 response.setMessage(errMessage);
                 return response;
             }
