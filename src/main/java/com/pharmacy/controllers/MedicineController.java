@@ -5,10 +5,7 @@ import com.pharmacy.payload.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -28,6 +25,10 @@ public class MedicineController {
     @GetMapping(value = "/by-substance")
     public ResponseEntity<Response<?>> getMedicinesBySubstanceName(@RequestParam String substanceName){
         return new ResponseEntity<>(medicineService.getMedicinesBySubstanceName(substanceName), HttpStatus.OK);
+    }
+    @GetMapping(value = "/by-category")
+    public ResponseEntity<Response<?>> getMedicinesByCategoryId(@RequestParam Long categoryId){
+        return new ResponseEntity<>(medicineService.getMedicinesByCategoryId(categoryId), HttpStatus.OK);
     }
 
 
