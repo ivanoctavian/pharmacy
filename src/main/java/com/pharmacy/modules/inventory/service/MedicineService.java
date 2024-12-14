@@ -3,15 +3,23 @@ package com.pharmacy.modules.inventory.service;
 
 import com.pharmacy.config.ApiException;
 import com.pharmacy.config.FieldValidator;
+import com.pharmacy.modules.approved_medicines.model.FdaApprovedMedicine;
+import com.pharmacy.modules.approved_medicines.model.Openfda;
+import com.pharmacy.modules.approved_medicines.service.ApiFdaService;
+import com.pharmacy.modules.inventory.model.Category;
 import com.pharmacy.modules.inventory.model.Medicine;
 import com.pharmacy.modules.inventory.model.Supplier;
+import com.pharmacy.modules.inventory.repository.CategoryRepository;
 import com.pharmacy.modules.inventory.repository.MedicineRepository;
+import com.pharmacy.modules.inventory.repository.SupplierRepository;
+import com.pharmacy.payload.AddMedicineRequest;
 import com.pharmacy.payload.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +30,63 @@ import java.util.Optional;
 public class MedicineService {
     private final MedicineRepository medicineRepository;
     private final FieldValidator fieldValidator;
+    private final ApiFdaService apiFdaService;
+    private final SupplierRepository supplierRepository;
+    private final CategoryRepository categoryRepository;
+
+    /**
+     * Steps:
+     * 1. validate the mandatory fields.
+     * 2. check if it is an approved medicine by FDA
+     * 3. check the FK if exists in table.
+     * 4. check the stock to be >0
+     * 5. create the fk objects to assign to the Medicine class
+     */
+    public Response<?> addNewMedicine(AddMedicineRequest request){
+        fieldValidator.validateMandatoryFields(request);
+        //check if it is an approved medicine by fda.
+        FdaApprovedMedicine approvedMedicine = apiFdaService.searchForMedicineByName(request.getName());
+        if(approvedMedicine == null){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Medicine is not approved by FDA.");
+        }
+        if(request.getExpirationDate().isBefore(LocalDate.now())){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Medicine is expired.");
+        }
+        if(request.getStock() < 1){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Stock must be at least 1.");
+        }
+        //check the request category id and supplier id. because we cannot introduce a medicine from a supplier we dont work with.
+        //also we support only the 3 types: antibiotics, supplements and medicine.
+        if(!supplierRepository.existsById(request.getSupplierId())){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Supplier id doesn't exist.");
+        }
+        if(!categoryRepository.existsById(request.getCategoryId())){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Category id doesn't exist.");
+        }
+        //
+        Category category = categoryRepository.findById(request.getCategoryId()).get();
+        Supplier supplier = supplierRepository.findById(request.getSupplierId()).get();
+        Openfda medicineFdaAdditionalInfo = approvedMedicine.getResults().get(0).getOpenfda();
+        String substanceName = medicineFdaAdditionalInfo.getSubstanceName().get(0);
+        String producer = medicineFdaAdditionalInfo.getManufacturerName().get(0);
+
+        Medicine medicine = new Medicine(request);
+        medicine.setCategory(category);
+        medicine.setSupplier(supplier);
+        medicine.setSubstanceName(substanceName);
+        medicine.setProducer(producer);
+
+        medicineRepository.save(medicine);
+
+        Response response = new Response();
+        response.setStatus(Response.Status.SUCCESS);
+        response.setMessage("Saved success.");
+        return response;
+
+
+    }
+
+    //get methods
 
     public Response<List<Medicine>> getMedicinesByCategoryId(Long categoryId){
         if(categoryId == null){
