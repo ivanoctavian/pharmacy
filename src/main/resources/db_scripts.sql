@@ -92,11 +92,11 @@ VALUES ('ali_medea', 'pwdmedea', FALSE, 'ROLE_EMPLOYEE');
 -- Category
 
 INSERT INTO Category
-(name, require_recipe) VALUES ('Supplements', FALSE );
+(name, require_recipe) VALUES ('SUPPLEMENTS', FALSE );
 INSERT INTO Category
-(name, require_recipe) VALUES ('Medicine', FALSE );
+(name, require_recipe) VALUES ('REGULAR_MEDICINES', FALSE );
 INSERT INTO Category
-    (name, require_recipe) VALUES ('Antibiotics', TRUE);
+    (name, require_recipe) VALUES ('ANTIBIOTICS', TRUE);
 
 -- Supplier
 INSERT INTO Supplier (name) VALUES ('Bayer');
