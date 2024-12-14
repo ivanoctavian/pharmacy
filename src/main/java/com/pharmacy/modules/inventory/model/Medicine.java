@@ -1,5 +1,6 @@
 package com.pharmacy.modules.inventory.model;
 
+import com.pharmacy.payload.AddMedicineRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -46,4 +47,12 @@ public class Medicine {
     @ManyToOne
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_CATEGORY_ID"))
     private Category category;
+
+    public Medicine(AddMedicineRequest addMedicineRequest){
+        this.name = addMedicineRequest.getName();
+        this.expirationDate = addMedicineRequest.getExpirationDate();
+        this.stock = addMedicineRequest.getStock();
+        this.producer = addMedicineRequest.getProducer();
+        this.price = addMedicineRequest.getPrice();
+    }
 }
