@@ -17,7 +17,7 @@ public class FieldValidator {
         }
     }
 
-    public Set<String> validateMandatoryFields_SET(Object obj) {
+    private Set<String> validateMandatoryFields_SET(Object obj) {
         Set<String> missingFields = new HashSet<>();
         Class<?> clazz = obj.getClass();
         Field[] fields = clazz.getDeclaredFields();
