@@ -1,6 +1,7 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.modules.inventory.service.MedicineService;
+import com.pharmacy.payload.AddMedicineRequest;
 import com.pharmacy.payload.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,10 @@ public class MedicineController {
         return new ResponseEntity<>(medicineService.getMedicinesByCategoryId(categoryId), HttpStatus.OK);
     }
 
-
+    @PostMapping(value = "/add")
+    public ResponseEntity<Response<?>> addnewMedicine(@RequestBody AddMedicineRequest request){
+        return new ResponseEntity<>(medicineService.addNewMedicine(request), HttpStatus.OK);
+    }
     //UPDATE
     //1 increaseStockByIdWith - in spate face get apoi creste cu x
     //2 decreaseStckByIdWith - ce se intampla daca ajunge la 0? sau sa nu iasa negativ
