@@ -122,7 +122,7 @@ public class SupplierService {
      Get suppliers methods
      */
     public Response<?> getSuppliers(Optional<String> supplierName){
-        if(supplierName.isPresent() && !supplierName.get().trim().isEmpty()){
+        if(supplierName.isPresent() && !supplierName.get().trim().isEmpty()) {
             return getSupplierByName(supplierName.get());
         }
         return getAllSuppliers();
@@ -133,15 +133,15 @@ public class SupplierService {
         log.info("List of suppliers found: " + suppliers);
         if(suppliers.isEmpty()){
             Response<List<Supplier>> response = new Response<>();
-            response.setStatus(Response.Status.FAIL);
+            response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No suppliers found.");
+            response.setData(suppliers);
             return response;
         }
         Response<List<Supplier>> response = new Response<>();
         response.setStatus(Response.Status.SUCCESS);
         response.setData(suppliers);
         return response;
-
     }
     private Response<Supplier> getSupplierByName(String supplierName){
         log.info("SupplierName param is present. Supplier to search for: " + supplierName);
@@ -154,10 +154,10 @@ public class SupplierService {
                 response.setData(supplier.get());
                 return response;
             }else{
-                String errMessage = String.format("Supplier with name %s was not found.",supplierName);
+                String errMessage = String.format("Supplier %s was not found.",supplierName);
                 log.info(errMessage);
                 Response<Supplier> response =new Response<>();
-                response.setStatus(Response.Status.FAIL);
+                response.setStatus(Response.Status.NOT_FOUND);
                 response.setMessage(errMessage);
                 return response;
             }
