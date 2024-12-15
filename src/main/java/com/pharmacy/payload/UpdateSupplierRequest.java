@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class UpdateSupplierRequest {
     @Mandatory
-    private String supplierName;
+    private Long id;
     @Mandatory
     private String newSupplierName;
 }
