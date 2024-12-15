@@ -29,6 +29,7 @@ public class SupplierService {
     private final FieldValidator fieldValidator;
 
     public Response<?> deleteSupplier(String supplierName){
+        log.info("Delete supplier start.");
         log.info("SupplierName param is present. Supplier to search for: " + supplierName);
         try{
             Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
@@ -57,8 +58,9 @@ public class SupplierService {
     }
 
     public Response<?> updateSupplier(UpdateSupplierRequest request){
+        log.info("UpdateSupplier start. Request: " + request);
         if(request == null){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "AddSupplierRequest is null");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "UpdateSupplierRequest is null");
         }
         fieldValidator.validateMandatoryFields(request);
         String supplierName = request.getSupplierName();
@@ -90,6 +92,7 @@ public class SupplierService {
     }
 
     public Response<?> addNewSupplier(AddSupplierRequest request){
+        log.info("AddNewSupplier start. Request: " + request);
         if(request == null){
             throw new ApiException(HttpStatus.BAD_REQUEST, "AddSupplierRequest is null");
         }
@@ -132,6 +135,7 @@ public class SupplierService {
         List<Supplier> suppliers = supplierRepository.findAll();
         log.info("List of suppliers found: " + suppliers);
         if(suppliers.isEmpty()){
+            log.info("No suppliers found.");
             Response<List<Supplier>> response = new Response<>();
             response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No suppliers found.");
