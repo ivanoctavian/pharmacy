@@ -24,8 +24,6 @@ public class AddMedicineRequest {
     @Mandatory
     private Long categoryId;
 
-
-    @Mandatory
     private String producer;
 
     @Mandatory
