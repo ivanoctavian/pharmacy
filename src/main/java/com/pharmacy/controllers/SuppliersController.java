@@ -18,8 +18,8 @@ public class SuppliersController {
     private final SupplierService supplierService;
 
     @GetMapping(value = "")
-    public ResponseEntity<Response<?>> getSuppliers(@RequestParam Optional<String> supplierName){
-        return new ResponseEntity<>(supplierService.getSuppliers(supplierName), HttpStatus.OK);
+    public ResponseEntity<Response<?>> getSuppliers(@RequestParam Optional<Long> supplierId){
+        return new ResponseEntity<>(supplierService.getSuppliers(supplierId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add")
@@ -32,7 +32,7 @@ public class SuppliersController {
         return new ResponseEntity<>(supplierService.updateSupplier(updateSupplierRequest), HttpStatus.OK);
     }
     @DeleteMapping(value = "")
-    public ResponseEntity<Response<?>> deleteSupplier(@RequestParam String supplierName){
-        return new ResponseEntity<>(supplierService.deleteSupplier(supplierName), HttpStatus.OK);
+    public ResponseEntity<Response<?>> deleteSupplier(@RequestParam Long id){
+        return new ResponseEntity<>(supplierService.deleteSupplier(id), HttpStatus.OK);
     }
 }

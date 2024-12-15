@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class SupplierHelper {
     protected UpdateSupplierRequest createUpdateRequest_existing(){
         UpdateSupplierRequest request = new UpdateSupplierRequest();
-        request.setSupplierName("TEST_1234");
+        request.setId(1234L);
         request.setNewSupplierName("NEW_123");
         return request;
     }

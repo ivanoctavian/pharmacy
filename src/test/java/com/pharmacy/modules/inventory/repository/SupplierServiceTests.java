@@ -45,11 +45,13 @@ class SupplierServiceTests {
         //1.
         //when searching for the name  return true
         //mocking that this record already exists in table
-        when(supplierRepository.existsByName(request.getSupplierName()))
-                .thenReturn(true) // first time when searching if the supplier already exists.
-                .thenReturn(false); // second when checking the NEW NAME if exists.
+        when(supplierRepository.existsById(request.getId()))
+                .thenReturn(true);// first time when searching if the supplier already exists.
+
+        when(supplierRepository.existsByName(request.getNewSupplierName()))
+                .thenReturn(false);
         //2.
-        when(supplierRepository.findByName(request.getSupplierName()))
+        when(supplierRepository.findById(request.getId()))
                 .thenReturn(Optional.of(initialMock));
         //3.
         //when save, return the mocked
@@ -70,11 +72,12 @@ class SupplierServiceTests {
         //1.
         //when searching for the name  return true
         //mocking that this record already exists in table
-        when(supplierRepository.existsByName(request.getSupplierName()))
-                .thenReturn(false) // first time when searching if the supplier already exists.
-                .thenReturn(false); // second when checking the NEW NAME if exists.
+        when(supplierRepository.existsById(request.getId()))
+                .thenReturn(false); // first time when searching if the supplier already exists.
+        when(supplierRepository.existsByName(request.getNewSupplierName()))
+                .thenReturn(false);
         //2.
-        when(supplierRepository.findByName(request.getSupplierName()))
+        when(supplierRepository.findById(request.getId()))
                 .thenReturn(Optional.of(initialMock));
         //3.
         //when save, return the mocked
@@ -83,7 +86,7 @@ class SupplierServiceTests {
         try {
             Response<?> response = supplierService.updateSupplier(request);
         }catch (ApiException ex){
-            String expectedMessage = "Supplier " + request.getSupplierName() + " does not exists.";
+            String expectedMessage = "Supplier " + request.getId() + " does not exists.";
             assertEquals(expectedMessage, ex.getMessage());
         }
     }
