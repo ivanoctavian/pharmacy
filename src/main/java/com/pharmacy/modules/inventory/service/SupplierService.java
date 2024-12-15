@@ -25,34 +25,24 @@ import java.util.Optional;
 public class SupplierService {
 
     private final SupplierRepository supplierRepository;
-
     private final FieldValidator fieldValidator;
 
     public Response<?> deleteSupplier(String supplierName){
         log.info("Delete supplier start.");
         log.info("SupplierName param is present. Supplier to search for: " + supplierName);
-        try{
-            Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
-            if(supplier.isPresent()){
-                supplierRepository.delete(supplier.get());
-                log.info("Supplier deleted successfully");
-                Response<Supplier> response =new Response<>();
-                response.setStatus(Response.Status.SUCCESS);
-                return response;
-            }else{
-                String errMessage = String.format("Supplier with name %s was not found.",supplierName);
-                log.info(errMessage);
-                Response<Supplier> response =new Response<>();
-                response.setStatus(Response.Status.FAIL);
-                response.setMessage(errMessage);
-                return response;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("Could not delete entity from database.");
-            Response<Supplier> response = new Response<>();
-            response.setStatus(Response.Status.ERROR);
-            response.setMessage("Could not delete entity from database.");
+        Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
+        if(supplier.isPresent()){
+            supplierRepository.delete(supplier.get());
+            log.info("Supplier deleted successfully");
+            Response<Supplier> response =new Response<>();
+            response.setStatus(Response.Status.SUCCESS);
+            return response;
+        }else{
+            String errMessage = String.format("Supplier with name %s was not found.",supplierName);
+            log.info(errMessage);
+            Response<Supplier> response =new Response<>();
+            response.setStatus(Response.Status.FAIL);
+            response.setMessage(errMessage);
             return response;
         }
     }
@@ -72,23 +62,14 @@ public class SupplierService {
         if(supplierRepository.existsByName(newSupplierName)){
            throw new ApiException(HttpStatus.BAD_REQUEST, String.format("New supplier name must be unique. '%s' already exists.", newSupplierName));
         }
-        try {
-            Supplier supplier = supplierRepository.findByName(supplierName).get();
-            supplier.setName(newSupplierName);
-            supplierRepository.save(supplier);
-            log.info("Supplier {} was updated successfully!", supplier);
-            Response<String> response = new Response<>();
-            response.setStatus(Response.Status.SUCCESS);
-            return response;
-        }catch (Exception e){
-            log.error("Exception catched: " + e.getMessage());
-            log.error("Supplier was not updated to database.");
-            Response<Supplier> response = new Response<>();
-            response.setStatus(Response.Status.ERROR);
-            response.setMessage("Supplier was not updated to database.");
-            return response;
-        }
 
+        Supplier supplier = supplierRepository.findByName(supplierName).get();
+        supplier.setName(newSupplierName);
+        supplierRepository.save(supplier);
+        log.info("Supplier {} was updated successfully!", supplier);
+        Response<String> response = new Response<>();
+        response.setStatus(Response.Status.SUCCESS);
+        return response;
     }
 
     public Response<?> addNewSupplier(AddSupplierRequest request){
@@ -97,28 +78,17 @@ public class SupplierService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "AddSupplierRequest is null");
         }
         String supplierName = request.getSupplierName();
-        if(supplierRepository.existsByName(supplierName)){
-            throw new ApiException(HttpStatus.BAD_REQUEST, String.format("Supplier '%s' already exists.", supplierName));
-        }
 
         Supplier supplier = new Supplier();
         supplier.setName(supplierName);
-        try {
-            String message = String.format("Supplier %s added successfully.", supplierName);
-            supplierRepository.save(supplier);
-            log.info(message);
-            Response<String> response = new Response<>();
-            response.setStatus(Response.Status.SUCCESS);
-            response.setMessage(message);
-            return response;
-        }catch (Exception e){
-            log.error("Exception catched: " + e.getMessage());
-            log.error("Supplier was not added to database.");
-            Response<Supplier> response = new Response<>();
-            response.setStatus(Response.Status.ERROR);
-            response.setMessage("Supplier was not added to database.");
-            return response;
-        }
+
+        String message = String.format("Supplier %s added successfully.", supplierName);
+        supplierRepository.save(supplier);
+        log.info(message);
+        Response<String> response = new Response<>();
+        response.setStatus(Response.Status.SUCCESS);
+        response.setMessage(message);
+        return response;
     }
 
     /**
@@ -149,28 +119,20 @@ public class SupplierService {
     }
     private Response<Supplier> getSupplierByName(String supplierName){
         log.info("SupplierName param is present. Supplier to search for: " + supplierName);
-        try{
-            Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
-            if(supplier.isPresent()){
-                log.info("Supplier found in table. Supplier: " + supplier.get());
-                Response<Supplier> response =new Response<>();
-                response.setStatus(Response.Status.SUCCESS);
-                response.setData(supplier.get());
-                return response;
-            }else{
-                String errMessage = String.format("Supplier %s was not found.",supplierName);
-                log.info(errMessage);
-                Response<Supplier> response =new Response<>();
-                response.setStatus(Response.Status.NOT_FOUND);
-                response.setMessage(errMessage);
-                return response;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("Could not get entity from database.");
+
+        Optional<Supplier> supplier = supplierRepository.findByName(supplierName);
+        if(supplier.isPresent()){
+            log.info("Supplier found in table. Supplier: " + supplier.get());
+            Response<Supplier> response =new Response<>();
+            response.setStatus(Response.Status.SUCCESS);
+            response.setData(supplier.get());
+            return response;
+        }else {
+            String errMessage = String.format("Supplier %s was not found.", supplierName);
+            log.info(errMessage);
             Response<Supplier> response = new Response<>();
-            response.setStatus(Response.Status.ERROR);
-            response.setMessage("Could not get entity from database.");
+            response.setStatus(Response.Status.NOT_FOUND);
+            response.setMessage(errMessage);
             return response;
         }
     }
