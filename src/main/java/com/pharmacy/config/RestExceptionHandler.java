@@ -14,13 +14,27 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<Object> handleSQLException(SQLException ex, WebRequest request) {
+        log.error("EX: " + ex);
+        String message;
+        switch (ex.getSQLState()){
+            case "23505" -> message = "Duplicates are not allowed.";
+            default -> message = "Database exception.";
+        }
+        Response<Object> response = new Response<>(Response.Status.ERROR, message);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         log.error("EX: " + ex);
