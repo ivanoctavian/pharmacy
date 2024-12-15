@@ -28,6 +28,7 @@ public class ApiFdaService {
     }
 
     public FdaApprovedMedicine searchForMedicineByName(String medicine){
+        log.info("SearchForMedicineByName in FDA Api Start. Medicine name: " + medicine);
         return this.webClient
                 .get()
                 .uri(builder -> builder

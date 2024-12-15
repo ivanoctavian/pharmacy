@@ -35,6 +35,7 @@ public class MedicineService {
     private final CategoryRepository categoryRepository;
 
     /**
+     * We can ADD only FDA approved medicines, so we need to search for them by using the public exposed api by them.
      * Steps:
      * 1. validate the mandatory fields.
      * 2. check if it is an approved medicine by FDA
@@ -43,24 +44,31 @@ public class MedicineService {
      * 5. create the fk objects to assign to the Medicine class
      */
     public Response<?> addNewMedicine(AddMedicineRequest request){
+        log.info("AddNewMedicine Start. Request: " + request);
         fieldValidator.validateMandatoryFields(request);
         //check if it is an approved medicine by fda.
         FdaApprovedMedicine approvedMedicine = apiFdaService.searchForMedicineByName(request.getName());
         if(approvedMedicine == null){
+            log.error("Medicine is not approved by FDA. Not found in the FDA dataset.");
             throw new ApiException(HttpStatus.BAD_REQUEST, "Medicine is not approved by FDA.");
         }
+        log.info("FdaApprovedMedicine found!");
         if(request.getExpirationDate().isBefore(LocalDate.now())){
+            log.error("Medicine is expired. Cannot continue.");
             throw new ApiException(HttpStatus.BAD_REQUEST, "Medicine is expired.");
         }
         if(request.getStock() < 1){
+            log.error("Stock is lower than 1. Cannot continue.");
             throw new ApiException(HttpStatus.BAD_REQUEST, "Stock must be at least 1.");
         }
         //check the request category id and supplier id. because we cannot introduce a medicine from a supplier we dont work with.
         //also we support only the 3 types: antibiotics, supplements and medicine.
         if(!supplierRepository.existsById(request.getSupplierId())){
+            log.error("Supplier id doesn't exist.");
             throw new ApiException(HttpStatus.BAD_REQUEST, "Supplier id doesn't exist.");
         }
         if(!categoryRepository.existsById(request.getCategoryId())){
+            log.error("Category id doesn't exist.");
             throw new ApiException(HttpStatus.BAD_REQUEST, "Category id doesn't exist.");
         }
         //
@@ -75,9 +83,9 @@ public class MedicineService {
         medicine.setSupplier(supplier);
         medicine.setSubstanceName(substanceName);
         medicine.setProducer(producer);
-
+        log.info("Medicine to insert: " + medicine);
         medicineRepository.save(medicine);
-
+        log.info("Medicine saved successfully.");
         Response response = new Response();
         response.setStatus(Response.Status.SUCCESS);
         response.setMessage("Saved success.");
@@ -89,15 +97,18 @@ public class MedicineService {
     //get methods
 
     public Response<List<Medicine>> getMedicinesByCategoryId(Long categoryId){
+        log.info("GetMedicinesByCategoryId start.");
         if(categoryId == null){
             throw new ApiException(HttpStatus.BAD_REQUEST, "CategoryId is null.");
         }
         log.info("CategoryId to search for: " + categoryId);
         List<Medicine> medicines = medicineRepository.findAllByCategory_Id(categoryId);
+        log.info("List of medicines found: " + medicines);
         if(medicines.isEmpty()){
             Response<List<Medicine>> response = new Response<>();
             response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No medicines found.");
+            log.info("No medicines found.");
             return response;
         }
         Response<List<Medicine>> response = new Response<>();
@@ -107,6 +118,7 @@ public class MedicineService {
     }
 
     public Response<List<Medicine>> getMedicinesBySubstanceName(String substanceName){
+        log.info("GetMedicinesBySubstanceName start.");
         if(substanceName == null){
             throw new ApiException(HttpStatus.BAD_REQUEST, "SubstanceName is null.");
         }
@@ -139,6 +151,7 @@ public class MedicineService {
             Response<List<Medicine>> response = new Response<>();
             response.setStatus(Response.Status.NOT_FOUND);
             response.setMessage("No medicines found.");
+            log.info("No medicines found.");
             return response;
         }
         Response<List<Medicine>> response = new Response<>();
