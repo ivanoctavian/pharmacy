@@ -36,6 +36,12 @@ public class MedicineController {
     public ResponseEntity<Response<?>> addnewMedicine(@RequestBody AddMedicineRequest request){
         return new ResponseEntity<>(medicineService.addNewMedicine(request), HttpStatus.OK);
     }
+    @PostMapping(value = "/increase-stock")
+    public ResponseEntity<Response<?>> increaseStock(@RequestParam Long medicineId, @RequestParam Long increaseBy){
+        return new ResponseEntity<>(medicineService.increaseStock(medicineId, increaseBy), HttpStatus.OK);
+    }
+
+
     //UPDATE
     //1 increaseStockByIdWith - in spate face get apoi creste cu x
     //2 decreaseStckByIdWith - ce se intampla daca ajunge la 0? sau sa nu iasa negativ
