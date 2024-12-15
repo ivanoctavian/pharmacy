@@ -34,6 +34,32 @@ public class MedicineService {
     private final SupplierRepository supplierRepository;
     private final CategoryRepository categoryRepository;
 
+    public Response<?> increaseStock(Long medicineId, Long increaseBy){
+        log.info("IncreaseStock start. Medicine Id = {}", medicineId);
+        log.info("Increase stock by: {}", increaseBy);
+        Optional<Medicine> medicineOpt = medicineRepository.findById(medicineId);
+        if(increaseBy < 1){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Negative numbers not allowed.");
+        }
+        if(medicineOpt.isEmpty()) {
+            log.info("Medicine with id: " + medicineId + " doesn't exists.");
+            Response response = new Response();
+            response.setStatus(Response.Status.NOT_FOUND);
+            response.setMessage("Medicine doesn't exist.");
+            return response;
+        }
+        Medicine medicine = medicineOpt.get();
+        Long actualStock = medicine.getStock();
+        Long newStock = actualStock + increaseBy;
+        medicine.setStock(newStock);
+        medicineRepository.save(medicine);
+        log.info("Medicine saved successfully. New stock set to {}", newStock);
+        Response response = new Response();
+        response.setStatus(Response.Status.SUCCESS);
+        response.setMessage("Stock increased successfully.");
+        return response;
+    }
+
     /**
      * We can ADD only FDA approved medicines, so we need to search for them by using the public exposed api by them.
      * Steps:
