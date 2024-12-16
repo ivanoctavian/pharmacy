@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,48 @@ public class MedicineService {
     private final SupplierRepository supplierRepository;
     private final CategoryRepository categoryRepository;
 
+    public Response<?> deleteMedicine(Long id){
+        log.info("DeleteMedicine start.");
+        Optional<Medicine> medicine = medicineRepository.findById(id);
+        if(medicine.isPresent()){
+            medicineRepository.delete(medicine.get());
+            log.info("Medicine deleted successfully");
+            Response<Medicine> response =new Response<>();
+            response.setStatus(Response.Status.SUCCESS);
+            return response;
+        }else{
+            String errMessage = String.format("Medicine doesn't exists.");
+            log.info(errMessage);
+            Response<Medicine> response =new Response<>();
+            response.setStatus(Response.Status.NOT_FOUND);
+            response.setMessage(errMessage);
+            return response;
+        }
+    }
+
+    public Response<?> changePrice(Long medicineId, Long newPrice){
+        log.info("ChangePrice start. Medicine Id = {}", medicineId);
+        log.info("New price: {}", newPrice);
+        Optional<Medicine> medicineOpt = medicineRepository.findById(medicineId);
+        if(newPrice < 0){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Negative numbers not allowed.");
+        }
+        if(medicineOpt.isEmpty()) {
+            log.info("Medicine with id: " + medicineId + " doesn't exists.");
+            Response response = new Response();
+            response.setStatus(Response.Status.NOT_FOUND);
+            response.setMessage("Medicine doesn't exist.");
+            return response;
+        }
+        Medicine medicine = medicineOpt.get();
+        medicine.setPrice(BigDecimal.valueOf(newPrice));
+        medicineRepository.save(medicine);
+        log.info("Medicine saved successfully. New price set to {}", newPrice);
+        Response response = new Response();
+        response.setStatus(Response.Status.SUCCESS);
+        response.setMessage("Price modified successfully.");
+        return response;
+    }
 
     public Response<?> decreaseStock(Long medicineId, Long decreaseBy){
         log.info("DecreaseStock start. Medicine Id = {}", medicineId);

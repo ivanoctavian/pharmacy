@@ -45,6 +45,17 @@ public class MedicineController {
         return new ResponseEntity<>(medicineService.decreaseStock(medicineId, decreaseBy), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/change-price")
+    public ResponseEntity<Response<?>> changePrice(@RequestParam Long medicineId, @RequestParam Long newPrice){
+        return new ResponseEntity<>(medicineService.changePrice(medicineId, newPrice), HttpStatus.OK);
+    }
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<Response<?>> deleteMedicine(@RequestParam Long medicineId){
+        return new ResponseEntity<>(medicineService.deleteMedicine(medicineId), HttpStatus.OK);
+    }
+
+
+
 
     //UPDATE
     //1 increaseStockByIdWith - in spate face get apoi creste cu x
