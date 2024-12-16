@@ -41,7 +41,7 @@ CREATE TABLE Medicine
    id INT PRIMARY KEY AUTO_INCREMENT,
    name VARCHAR(255) NOT NULL UNIQUE,
    expiration_date DATE NOT NULL,
-   stock INT CHECK (stock > 0),
+   stock INT,
    supplier_id INT,
    category_id INT,
    substance_name VARCHAR (255),
