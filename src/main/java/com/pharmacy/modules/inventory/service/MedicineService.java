@@ -236,9 +236,9 @@ public class MedicineService {
 
     }
 
-    public Response<?> getMedicines(Optional<String> medicineName){
-        if(medicineName.isPresent() && !medicineName.get().trim().isEmpty()){
-            return getMedicineByName(medicineName.get());
+    public Response<?> getMedicines(Optional<Long> medicineId){
+        if(medicineId.isPresent() && medicineId.get() != 0){
+            return getMedicineByName(medicineId.get());
         }
         return getAllMedicines();
     }
@@ -258,10 +258,10 @@ public class MedicineService {
         response.setData(medicines);
         return response;
     }
-    private Response<Medicine> getMedicineByName(String medicineName){
-        log.info("MedicineName is present. Medicine to search for: " + medicineName);
+    private Response<Medicine> getMedicineByName(Long medicineId){
+        log.info("MedicineId is present. Medicine to search for: " + medicineId);
         try{
-            Optional<Medicine> medicine = medicineRepository.findByName(medicineName);
+            Optional<Medicine> medicine = medicineRepository.findById(medicineId);
             if(medicine.isPresent()){
                 log.info("Medicine found in table. Medicine: " + medicine.get());
                 Response<Medicine> response =new Response<>();
@@ -269,7 +269,7 @@ public class MedicineService {
                 response.setData(medicine.get());
                 return response;
             }else{
-                String errMessage = String.format("Medicine %s was not found.",medicineName);
+                String errMessage = String.format("Medicine %s was not found.",medicineId);
                 log.info(errMessage);
                 Response<Medicine> response =new Response<>();
                 response.setStatus(Response.Status.NOT_FOUND);

@@ -17,8 +17,8 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @GetMapping(value = "")
-    public ResponseEntity<Response<?>> getMedicines(@RequestParam Optional<String> medicineName){
-        return new ResponseEntity<>(medicineService.getMedicines(medicineName), HttpStatus.OK);
+    public ResponseEntity<Response<?>> getMedicines(@RequestParam Optional<Long> medicineId){
+        return new ResponseEntity<>(medicineService.getMedicines(medicineId), HttpStatus.OK);
     }
     @GetMapping(value = "/by-substance")
     public ResponseEntity<Response<?>> getMedicinesBySubstanceName(@RequestParam String substanceName){
