@@ -40,6 +40,10 @@ public class MedicineController {
     public ResponseEntity<Response<?>> increaseStock(@RequestParam Long medicineId, @RequestParam Long increaseBy){
         return new ResponseEntity<>(medicineService.increaseStock(medicineId, increaseBy), HttpStatus.OK);
     }
+    @PostMapping(value = "/decrease-stock")
+    public ResponseEntity<Response<?>> decreaseStock(@RequestParam Long medicineId, @RequestParam Long decreaseBy){
+        return new ResponseEntity<>(medicineService.decreaseStock(medicineId, decreaseBy), HttpStatus.OK);
+    }
 
 
     //UPDATE

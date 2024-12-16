@@ -34,6 +34,36 @@ public class MedicineService {
     private final SupplierRepository supplierRepository;
     private final CategoryRepository categoryRepository;
 
+
+    public Response<?> decreaseStock(Long medicineId, Long decreaseBy){
+        log.info("DecreaseStock start. Medicine Id = {}", medicineId);
+        log.info("DecreaseStock stock by: {}", decreaseBy);
+        Optional<Medicine> medicineOpt = medicineRepository.findById(medicineId);
+        if(decreaseBy < 1){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Negative numbers not allowed.");
+        }
+        if(medicineOpt.isEmpty()) {
+            log.info("Medicine with id: " + medicineId + " doesn't exists.");
+            Response response = new Response();
+            response.setStatus(Response.Status.NOT_FOUND);
+            response.setMessage("Medicine doesn't exist.");
+            return response;
+        }
+        Medicine medicine = medicineOpt.get();
+        Long actualStock = medicine.getStock();
+        Long newStock = actualStock - decreaseBy;
+        if(newStock < 0){
+            throw new ApiException(HttpStatus.BAD_REQUEST, "New stock cannot be negative.");
+        }
+        medicine.setStock(newStock);
+        medicineRepository.save(medicine);
+        log.info("Medicine saved successfully. New stock set to {}", newStock);
+        Response response = new Response();
+        response.setStatus(Response.Status.SUCCESS);
+        response.setMessage("Stock increased successfully.");
+        return response;
+    }
+
     public Response<?> increaseStock(Long medicineId, Long increaseBy){
         log.info("IncreaseStock start. Medicine Id = {}", medicineId);
         log.info("Increase stock by: {}", increaseBy);
