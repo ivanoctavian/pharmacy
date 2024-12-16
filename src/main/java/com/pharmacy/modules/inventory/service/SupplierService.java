@@ -94,7 +94,7 @@ public class SupplierService {
      */
     public Response<?> getSuppliers(Optional<Long> supplierId){
         if(supplierId.isPresent() && supplierId.get() != 0) {
-            return getSupplierByName(supplierId.get());
+            return getSupplierById(supplierId.get());
         }
         return getAllSuppliers();
     }
@@ -115,7 +115,7 @@ public class SupplierService {
         response.setData(suppliers);
         return response;
     }
-    private Response<Supplier> getSupplierByName(Long id){
+    private Response<Supplier> getSupplierById(Long id){
         log.info("SupplierId param is present. Supplier to search for: " + id);
 
         Optional<Supplier> supplier = supplierRepository.findById(id);
