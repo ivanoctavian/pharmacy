@@ -15,10 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MedicineController {
     private final MedicineService medicineService;
-    //GET
-    //1 getMedicineByName - tabel extins cu join
-    //2 getMedicineBySubstanceName -tabel extins cu join
-    //3 getByCategoryId - supliment, antibiotic, etc
+
     @GetMapping(value = "")
     public ResponseEntity<Response<?>> getMedicines(@RequestParam Optional<String> medicineName){
         return new ResponseEntity<>(medicineService.getMedicines(medicineName), HttpStatus.OK);
@@ -53,19 +50,5 @@ public class MedicineController {
     public ResponseEntity<Response<?>> deleteMedicine(@RequestParam Long medicineId){
         return new ResponseEntity<>(medicineService.deleteMedicine(medicineId), HttpStatus.OK);
     }
-
-
-
-
-    //UPDATE
-    //1 increaseStockByIdWith - in spate face get apoi creste cu x
-    //2 decreaseStckByIdWith - ce se intampla daca ajunge la 0? sau sa nu iasa negativ
-    //3 changePriceByIdWith -
-
-    //ADD
-    //1 addNewMedicine - mesaje potrivite daca nu gaseste id-ul de supplier
-
-    //DELETE
-    //1 deleteMedicine by id
 
 }
