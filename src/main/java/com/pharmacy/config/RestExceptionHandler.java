@@ -53,7 +53,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String error = ex.getParameterName() + " parameter is missing";
-        Response<Object> response = new Response<>(Response.Status.ERROR, ex.getMessage());
+        Response<Object> response = new Response<>(Response.Status.ERROR, error);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
