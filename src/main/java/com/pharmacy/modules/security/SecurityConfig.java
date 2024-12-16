@@ -20,13 +20,14 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain1(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/medicines").hasRole("EMPLOYEE");
-                    auth.requestMatchers("/suppliers").permitAll();
-                    auth.requestMatchers("/h2-console").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/medicines/**").hasRole("EMPLOYEE");
+                    auth.requestMatchers("/suppliers/**").permitAll();
+                    auth.requestMatchers("/h2-console/**").permitAll();
+                    auth.anyRequest().permitAll();
                 })
                 .authenticationProvider(customBasicAuthProvider)
                 .authenticationManager(customAuthenticationManager)
+                .httpBasic(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
