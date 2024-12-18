@@ -3,13 +3,24 @@
 
 SpringBoot RESTful api that supports CRUD operations on a database in order to manage items in a pharmacy inventory.
 
+The project uses H2 database to store the data.
+
+
+
+## Features
+
+- All Medicines that are going to be added must be approved by FDA: when calling the **/medicines/add** endpoint, the first step is to make an api call to https://api.fda.gov/drug/label.json?search=openfda.brand_name:'medicine-name' ensure the medicine is approved and to get some additional informations.
+- RBAC with Basic Auth. Username and password are stored in the database along with **ROLE** and one more flag for enabling/disabling users: **ENABLED**
+
 
 
 ## API Reference
 Below you cand find the authorization and the some of the available endpoints.
 
+
 ### Authorization
-All requests require username and password using BasicAuth method.
+This project is built using Spring Boot and features multiple management endpoints. For the authentication and authorization part, a custom solution has been implemented. The AuthenticationManager has been overridden to support user authentication using a username and password from the database, where user roles are also stored.
+Additionally, **Role-Based Access Control (RBAC)** has been configured in the security setup to manage access to different endpoints based on user roles.
 
 ### Responses
 ```
