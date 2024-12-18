@@ -18,6 +18,13 @@ The project uses H2 database to store the data.
 Below you cand find the authorization and the some of the available endpoints.
 
 
+
+## Database
+<img width="757" alt="DB_Scheme" src="https://github.com/user-attachments/assets/390254ea-dc82-45d0-9836-2856808ae45f" />
+
+
+
+
 ### Authorization
 This project is built using Spring Boot and features multiple management endpoints. For the authentication and authorization part, a custom solution has been implemented. The AuthenticationManager has been overridden to support user authentication using a username and password from the database, where user roles are also stored.
 Additionally, **Role-Based Access Control (RBAC)** has been configured in the security setup to manage access to different endpoints based on user roles.
