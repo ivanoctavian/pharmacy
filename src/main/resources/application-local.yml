@@ -1,0 +1,2 @@
+db:
+  url: 'DB FROM local PHARMACY is overriding the config store if the local is set up as profile when running'

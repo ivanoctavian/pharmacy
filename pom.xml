@@ -63,6 +63,15 @@
             <version>5.11.3</version>
             <scope>test</scope>
         </dependency>
+        <!--SPRING CLOUD DEPENDENCIES-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-config-client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-client</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+
 
                 <dependency>
                     <groupId>org.springframework.boot</groupId>

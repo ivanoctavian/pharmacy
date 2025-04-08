@@ -26,6 +26,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/medicines/**").hasAnyRole("ADMIN", "EMPLOYEE");
                     auth.requestMatchers("/suppliers/**").permitAll();
                     auth.requestMatchers("/h2-console/**").permitAll();
+                    auth.requestMatchers("/actuator/**").permitAll();
+                    auth.requestMatchers("/test/configserver").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .authenticationProvider(customBasicAuthProvider)

@@ -1,5 +1,10 @@
 spring:
   application:
     name: Pharmacy
-    profiles:
-      active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: DEV
+    import:
+      - pharmacy-dev.yml
